@@ -1,0 +1,1 @@
+gcc blackjack.c -o Bin/blackjack

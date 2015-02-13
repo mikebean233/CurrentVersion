@@ -1,0 +1,204 @@
+------------------------------------------ card
+Represents a playing card.
+
+
+int suite;
+    The suite of the card
+    -HEARTS   0
+    -DIAMONDS 1
+    -CLUBS    2
+    -SPADES	  3
+
+int rank;  
+    The rank of the card
+    - ACE - KING
+    -   1 - 13
+
+
+int color;
+    the color of the card	
+    - BLACK 0
+    - RED   1
+------------------------------------------------------------------
+
+-------------------------------------------- shoe
+Represents a shoe of playing cards.
+
+
+int No_Of_Decks;
+    How many decks are in the shoe;
+
+int No_Of_Cards;
+    How many cards are in the shoe (No_Of_Decks * 52)
+
+card *cards;
+     An array of card structures (the cards in the shoe)
+
+int Next_Card;
+    The next card to drawn from the shoe (the card on top of the 
+    pile). This is an index to be used in the cards[] array.
+
+double cut_position;
+       The position where the shoe has bean cut by the player.
+       This is represented as percentage (1.0 = 100%, 0.5 = 50%) 
+       where 0 is the top of the pile and 1 is the bottom.
+
+int is_past_cut;
+    Is the next card past the cut_position (1 true, 0 false).
+    This is used to determine if the shoe needs to be re-shuffled.
+
+------------------------------------------------------------------
+
+------------------------------------------ BJHand
+Represents a blackjack hand
+
+card cards[21];
+     An array that holds the actuall cards in the blackjack hand
+
+int no_of_cards;
+    The number of cards in the blackjack hand.
+
+int is_soft;
+    Is the hand a soft hand (1 yes, 0 no).
+    
+int is_blackjack;
+		Is the hand a blackjack. (1 yes, 0 no). This should be set 
+		during the BJHand_Count() function.
+		
+int count;
+		The count of the hand.  If the hand is soft, this is the higher of
+		the two possabilities.
+------------------------------------------------------------------
+
+----------------------------------------- Play_Sit
+Represents the situation that a player is in.
+
+card dealer_up_card;
+     what is the dealers visible card.
+
+double running_count;
+       What is the running count of the came (depends on the 
+       counting method used).
+
+double true_count;
+       What is the true count of the game (depends on the counting
+       method used).
+
+int options[5];
+    This array stores the actions that are available to the player.
+    possible actions:
+    HIT           0
+    STAND         1
+    STAY          1
+    SPLIT         2
+    DOUBLE_DOWN   3
+    SURRENDER     4
+    INSURANCE     5
+-----------------------------------------------------------------
+
+--------------------------------------------------------  BJPlayer
+Represents a blackjack player
+
+int Current_Bet;
+    This is the bet that applies to the current hand that is
+    being played (it represents the chips in the betting circle
+    on the table).
+
+int Std_Bet;
+    This is the standard bet for the player, kind of a defualt bet.
+
+int Balance;
+    This is the amount of money that the player currently has,
+    meaning the funds available to place a bet with (not including 
+    the current bet).
+ 
+int (*strat_func)(void *, void *, void *);
+    This is a function pointer that points to the strategy function
+    for the player.  The strategy function determines what action
+    for the player to take given the current situation (players 
+    hand, dealers up card, current count, ect).
+    Note: Strategy_0() in blackjack.c is used to give the 
+	  user control of a player.
+
+int is_dealer;
+    Is the player the dealer (1 yes, 0 no);
+
+int next_action;
+    The next action to be performed by the player.
+
+int player_no;
+    The players unique id number.
+
+Play_Sit situation;    
+	 the situation that the player is in.
+
+int count_type;
+    This defines the counting method used by the player;
+    CARD_COUNTING_NONE 0
+    CARD_COUNTING_HILOW 1
+    
+int result;
+		This integer represents whether the player has LOST ( 0 ), 
+		PUSHED ( 1 ), or WON ( 2 ).
+		
+int in_game;
+		Is the player in the game? ( 1 yes, 0 no).
+----------------------------------------------------------------------
+----------------------------------------------- BJGameRules
+Represents the rules used for a particular game of blackjack, this 
+structure stores what rule variations are used (for example whether 
+the dealer hits or stands on soft 17, is insurance offered, what are 
+the payout rates, ect)
+
+int dealer_hit_soft_17;
+    Does the dealer hit on a soft 17 (1 true, 0 false).
+
+int allow_dd_on[14];
+    What cards can be double downed on.  The index is the the rank of 
+    the card;
+    1 ACE
+    2 TWO
+    3 THREE
+    4 FOUR
+    5 FIVE
+    6 SIX
+    7 SEVEN
+    8 EIGHT
+    9 NINE
+    10 TEN
+    11 JACK
+    12 QUEEN
+    13 KING
+
+int allow_spit_after_dd;
+    Are the players allowed to split after doubling down
+
+int offer_insurance;
+    Does the dealer offer insurance (1/0).
+
+----------------------------------------------------------------------
+----------------------------------------------- BJGame
+Represents a blackjack game
+
+int no_of_players;
+    The number of players in the game.
+
+int no_of_decks;
+    The number of decks in the shoe.
+
+shoe Pshoe;
+     The structure that represents the shoe used in the 
+     blackjack game.
+
+BJPlayer Dealer;
+     The structure that represents the dealer in the
+     blackjack game.
+
+BJplayer *Pplayers;
+     A pointer to an array of BJPlayer structures representing
+     all of the players in the game.
+
+BJGameRules game_rules;
+     The structure that represents the rules for this particular
+     game.
+-------------------------------------------------------------------------     
